@@ -15,11 +15,11 @@ const Header = () => {
   ];
 
   return (
-    <header className="bg-white shadow-md">
+    <header className="bg-gradient-to-r from-gray-900 to-gray-800 shadow-md">
       <div className="w-full px-4 py-4 flex justify-between items-center">
         <div className="flex items-center space-x-2 pl-2">
           <span className="text-3xl">🩺</span>
-          <h1 className="text-2xl font-bold text-blue-600">DocFind</h1>
+          <h1 className="text-2xl font-bold text-white">DocFind</h1>
         </div>
 
         <nav className="space-x-8">
@@ -35,7 +35,7 @@ const Header = () => {
               <Link
                 key={link.to}
                 to={link.to}
-                className="text-gray-700 hover:text-blue-500 transition"
+                className="text-gray-300 hover:text-white transition font-medium"
               >
                 {link.label}
               </Link>
