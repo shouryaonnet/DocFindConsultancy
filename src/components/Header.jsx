@@ -6,13 +6,14 @@ const Header = () => {
   const currentPath = location.pathname;
 
   const links = [
-    { to: '/', label: 'Home' },
-    { to: '/login', label: 'Login' },
-    { to: '/user', label: 'User Panel' },
-    { to: '/doctor', label: 'Doctor Panel' },
-    { to: '/admin', label: 'Admin Panel' },
-    { to: '/lab', label: 'Lab Panel' },
-  ];
+  { to: '/', label: 'Home' },
+  { to: '/auth', label: 'Login / Signup' },
+  { to: '/user', label: 'User Panel' },
+  { to: '/doctor', label: 'Doctor Panel' },
+  { to: '/admin', label: 'Admin Panel' },
+  { to: '/lab', label: 'Lab Panel' },
+];
+
 
   return (
     <header className="bg-gradient-to-r from-gray-900 to-gray-800 shadow-md">
