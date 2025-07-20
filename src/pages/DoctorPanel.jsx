@@ -3,20 +3,47 @@ import React, { useState } from 'react';
 const DoctorPanel = () => {
   const [activeTab, setActiveTab] = useState('appointments');
   const [appointmentType, setAppointmentType] = useState('online');
+  const [newBlog, setNewBlog] = useState('');
+  const [blogs, setBlogs] = useState([
+    'Understanding Diabetes: Prevention and Care Tips',
+    'Importance of Regular Health Checkups',
+    'Managing Stress Through Mindfulness',
+    'Heart Health: Tips for a Healthy Heart',
+  ]);
 
-  const onlineAppointments = [
-    { id: 1, patient: 'John Doe', date: '2025-08-01', time: '10:00 AM', mode: 'Video Call' },
-    { id: 2, patient: 'Emily Clark', date: '2025-08-03', time: '3:00 PM', mode: 'Audio Call' }
+  const onlineAppointments = Array.from({ length: 10 }, (_, i) => ({
+    id: i + 1,
+    patient: `Online Patient ${i + 1}`,
+    date: `2025-08-${(i + 1).toString().padStart(2, '0')}`,
+    time: `${9 + i}:00 AM`,
+    mode: i % 2 === 0 ? 'Video Call' : 'Audio Call'
+  }));
+
+  const inPersonAppointments = Array.from({ length: 10 }, (_, i) => ({
+    id: i + 11,
+    patient: `InPerson Patient ${i + 1}`,
+    date: `2025-08-${(i + 1).toString().padStart(2, '0')}`,
+    time: `${2 + i}:00 PM`,
+    location: 'Clinic'
+  }));
+
+  const patients = Array.from({ length: 20 }, (_, i) => ({
+    id: i + 1,
+    name: `Patient ${i + 1}`,
+    condition: ['Flu', 'Diabetes', 'Hypertension', 'Asthma'][i % 4],
+    operatedOn: `2025-07-${(i + 10).toString().padStart(2, '0')}`
+  }));
+
+  const reviews = [
+    { id: 1, user: 'John Doe', content: 'Great consultation experience!' },
+    { id: 2, user: 'Jane Smith', content: 'Very professional and helpful.' },
   ];
 
-  const inPersonAppointments = [
-    { id: 3, patient: 'Jane Smith', date: '2025-08-02', time: '2:00 PM', location: 'Clinic' }
-  ];
-
-  const patients = [
-    { id: 1, name: 'John Doe', condition: 'Flu' },
-    { id: 2, name: 'Jane Smith', condition: 'Diabetes' }
-  ];
+  const userReviews = Array.from({ length: 5 }, (_, i) => ({
+    id: i + 1,
+    user: `User ${i + 1}`,
+    content: `Feedback from User ${i + 1}`
+  }));
 
   return (
     <div className="flex min-h-screen">
@@ -26,6 +53,7 @@ const DoctorPanel = () => {
         <button onClick={() => setActiveTab('patients')} className="block w-full text-left py-2 hover:bg-gray-700 rounded">My Patients</button>
         <button onClick={() => setActiveTab('profile')} className="block w-full text-left py-2 hover:bg-gray-700 rounded">Profile Settings</button>
         <button onClick={() => setActiveTab('reviews')} className="block w-full text-left py-2 hover:bg-gray-700 rounded">Reviews</button>
+        <button onClick={() => setActiveTab('blogs')} className="block w-full text-left py-2 hover:bg-gray-700 rounded">Write Blogs</button>
       </aside>
 
       <main className="flex-1 p-8 bg-gray-50">
@@ -57,13 +85,57 @@ const DoctorPanel = () => {
           </div>
         )}
 
+        {activeTab === 'reviews' && (
+          <div>
+            
+
+            <h3 className="text-xl font-semibold mt-6 mb-2">User Feedback</h3>
+            {userReviews.map(r => (
+              <div key={r.id} className="bg-white shadow rounded p-4 mb-2">
+                <strong>{r.user}:</strong> {r.content}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {activeTab === 'blogs' && (
+          <div>
+            <h3 className="text-2xl font-semibold mb-4">Write a Blog</h3>
+            <textarea
+              value={newBlog}
+              onChange={(e) => setNewBlog(e.target.value)}
+              placeholder="Write your blog here..."
+              className="w-full p-2 border rounded mb-2"
+              rows="4"
+            />
+            <button
+              onClick={() => {
+                if (newBlog.trim()) {
+                  setBlogs([newBlog, ...blogs]);
+                  setNewBlog('');
+                }
+              }}
+              className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
+            >
+              Publish Blog
+            </button>
+            <ul className="space-y-2">
+              {blogs.map((blog, index) => (
+                <li key={index} className="bg-white shadow rounded p-4">
+                  {blog}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         {activeTab === 'patients' && (
           <div>
-            <h3 className="text-2xl font-semibold mb-4">My Patients</h3>
+            <h3 className="text-2xl font-semibold mb-4">My Recent Patients</h3>
             <ul className="space-y-2">
-              {patients.map(patient => (
-                <li key={patient.id} className="bg-white shadow rounded p-4">
-                  Name: {patient.name} <br /> Condition: {patient.condition}
+              {patients.map(p => (
+                <li key={p.id} className="bg-white shadow rounded p-4">
+                  Name: {p.name} <br /> Condition: {p.condition} <br /> Operated On: {p.operatedOn}
                 </li>
               ))}
             </ul>
@@ -74,13 +146,6 @@ const DoctorPanel = () => {
           <div>
             <h3 className="text-2xl font-semibold mb-4">Profile Settings</h3>
             <p>Update your profile info here.</p>
-          </div>
-        )}
-
-        {activeTab === 'reviews' && (
-          <div>
-            <h3 className="text-2xl font-semibold mb-4">Reviews</h3>
-            <p>Patient feedback will be shown here.</p>
           </div>
         )}
       </main>

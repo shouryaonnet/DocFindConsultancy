@@ -7,11 +7,11 @@ const Header = () => {
 
   const links = [
   { to: '/', label: 'Home' },
-  { to: '/auth', label: 'Login / Signup' },
   { to: '/user', label: 'User Panel' },
   { to: '/doctor', label: 'Doctor Panel' },
   { to: '/admin', label: 'Admin Panel' },
   { to: '/lab', label: 'Lab Panel' },
+  { to: '/auth', label: 'Login / Signup' },
 ];
 
 
