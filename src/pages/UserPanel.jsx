@@ -66,7 +66,7 @@ const UserPanel = () => {
 
           {activeTab === 'dashboard' && (
             <div>
-              <h3 className="text-3xl font-bold mb-4">Welcome back, Rohit! 👋</h3>
+              <h3 className="text-3xl font-bold mb-4">Welcome back, Shourya! 👋</h3>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div className="bg-white p-4 rounded shadow">

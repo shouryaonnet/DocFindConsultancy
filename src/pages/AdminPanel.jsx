@@ -4,39 +4,56 @@ const AdminPanel = () => {
   const [view, setView] = useState('dashboard');
   const [doctorFilter, setDoctorFilter] = useState('');
 
-  const verificationRequests = [
+  const [verificationRequests, setVerificationRequests] = useState([
     { id: 1, name: 'Dr. Sharma', type: 'Doctor' },
     { id: 2, name: 'LabCare Diagnostics', type: 'Lab' },
     { id: 3, name: 'Dr. Mehta', type: 'Doctor' },
-  ];
+  ]);
 
-  const doctors = [
+  const [doctors, setDoctors] = useState([
     { id: 1, name: 'Dr. Sharma', specialization: 'Cardiologist', area: 'Mumbai', status: 'Verified' },
     { id: 2, name: 'Dr. Patel', specialization: 'Dermatologist', area: 'Delhi', status: 'Unverified' },
     { id: 3, name: 'Dr. Khan', specialization: 'Neurologist', area: 'Bangalore', status: 'Verified' },
     { id: 4, name: 'Dr. Mehta', specialization: 'Orthopedic', area: 'Mumbai', status: 'Unverified' },
-  ];
+  ]);
 
-  const users = [
+  const [users, setUsers] = useState([
     { id: 1, name: 'Rohit', area: 'Mumbai' },
     { id: 2, name: 'Priya', area: 'Delhi' },
     { id: 3, name: 'Karan', area: 'Mumbai' },
     { id: 4, name: 'Sara', area: 'Bangalore' },
-  ];
+  ]);
 
-  const feedbacks = [
+  const [feedbacks, setFeedbacks] = useState([
     { id: 1, user: 'Rohit', comment: 'Great platform, easy to book doctors!' },
     { id: 2, user: 'Priya', comment: 'The lab test service was fast and convenient.' },
     { id: 3, user: 'Sara', comment: 'Need more doctors in my city.' },
-  ];
+  ]);
 
   const filteredDoctors = doctorFilter
     ? doctors.filter(doc => doc.area.toLowerCase().includes(doctorFilter.toLowerCase()))
     : doctors;
 
+  const handleApprove = (id) => {
+    const request = verificationRequests.find(r => r.id === id);
+    if (request?.type === 'Doctor') {
+      setDoctors(prev =>
+        prev.map(doc => doc.name === request.name ? { ...doc, status: 'Verified' } : doc)
+      );
+    }
+    setVerificationRequests(prev => prev.filter(req => req.id !== id));
+  };
+
+  const handleReject = (id) => {
+    setVerificationRequests(prev => prev.filter(req => req.id !== id));
+  };
+
+  const handleDeleteReview = (id) => {
+    setFeedbacks(prev => prev.filter(fb => fb.id !== id));
+  };
+
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
       <aside className="w-64 bg-gray-900 text-white flex flex-col p-4 space-y-4">
         <h2 className="text-2xl font-bold mb-6">Admin Panel</h2>
         {['dashboard', 'verify', 'doctors', 'labs', 'users', 'analytics', 'reviews', 'settings'].map(tab => (
@@ -50,7 +67,6 @@ const AdminPanel = () => {
         ))}
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 p-6 space-y-4">
         {view === 'dashboard' && (
           <section>
@@ -101,8 +117,18 @@ const AdminPanel = () => {
                   <p><strong>Type:</strong> {req.type}</p>
                 </div>
                 <div>
-                  <button className="bg-green-600 text-white px-2 py-1 rounded mr-2">Approve</button>
-                  <button className="bg-red-600 text-white px-2 py-1 rounded">Reject</button>
+                  <button
+                    className="bg-green-600 text-white px-2 py-1 rounded mr-2"
+                    onClick={() => handleApprove(req.id)}
+                  >
+                    Approve
+                  </button>
+                  <button
+                    className="bg-red-600 text-white px-2 py-1 rounded"
+                    onClick={() => handleReject(req.id)}
+                  >
+                    Reject
+                  </button>
                 </div>
               </div>
             ))}
@@ -157,7 +183,12 @@ const AdminPanel = () => {
               <div key={fb.id} className="bg-white p-3 shadow rounded mb-2">
                 <p><strong>User:</strong> {fb.user}</p>
                 <p><strong>Comment:</strong> {fb.comment}</p>
-                <button className="bg-red-500 text-white px-2 py-1 rounded mt-1">Delete Review</button>
+                <button
+                  className="bg-red-500 text-white px-2 py-1 rounded mt-1"
+                  onClick={() => handleDeleteReview(fb.id)}
+                >
+                  Delete Review
+                </button>
               </div>
             ))}
           </section>
